@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "typescript": "^5.1.6"
+  },
+  "devDependencies": {
+    "tslint": "^6.1.3"
+  }
+}
