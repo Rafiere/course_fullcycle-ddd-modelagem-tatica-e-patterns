@@ -32,12 +32,57 @@ class Customer {
 
     private _id: string;
     private _name: string;
-    private _address: string;
+    private _address = "";
+    private _active: boolean = true;
 
+    /* No momento da CONSTRUÇÃO do objeto, ele já deve estar se autovalidando. Isso
+    * garantirá que, todas as vezes que vamos tentar criar um objeto errado ou não
+    * atendermos às regras de negócio. */
+
+    /* Se uma regra de negócio dizer que um nome que começa com "a" não pode ser
+    * cadastrado no sistema, o método "validate()" deverá realizar essa validação. */
+
+    /* Não devemos usar "setters" porque eles podem não validar as regras de negócio
+    * corretamente, assim como o "validate" poderá validar. */
     constructor(id: string, name: string, address: string) {
         this._id = id;
         this._name = name;
-        this._address = address;
+        this.validate();
+    }
+
+    /* O método "validate()" não pode permitir que uma entidade inconsistente seja
+    * criada. Nesse exemplo, se o "id" e o "name" são obrigatórios, a entidade precisará
+    * fazer essa validação. */
+    validate(){
+        if(this._name.length === 0){
+            throw new Error("Name is required");
+        }
+        if(this._id.length === 0){
+            throw new Error("ID is required");
+        }
+    }
+
+    /* Abaixo, os métodos "activate()" e "deactivate()" podem
+    * expressar o negócio, ou seja, dentro do domínio rico, teremos
+    * as regras de negócio. */
+
+    /* Quando estamos falando em DDD, a validação significa fazer com que o
+    * estado da entidade atual esteja sempre correto. */
+
+    /* A entidade sempre terá que representar o estado correto e atual de um
+    * determinado elemento. */
+    activate(){
+
+        /* Abaixo, estamos apenas ativando o usuário se ele tiver um endereço. Essa poderia ser
+        * uma regra de negócios da aplicação. */
+        if(this._address.length === 0){
+            throw new Error("Address is required to activate the customer.");
+        }
+        this._active = true;
+    }
+
+    deactivate(){
+        this._active = true;
     }
 
     get id(): string {
@@ -56,11 +101,22 @@ class Customer {
         this._id = value;
     }
 
-    set name(value: string) {
-        this._name = value;
-    }
-
     set address(value: string) {
         this._address = value;
+    }
+
+    /* Quando começamos pensar em "motivos para mudança", começamos a
+    * pensar em regras de negócio. */
+
+    /* A diferença de criarmos um "setName" e um método "changeName" é que
+    * o "setName" não possui expressividade nenhuma. Ele está lá para "caso seja necessária a
+    * mudança", e o método "changeName()", pelo contrário, possui uma semântica indicando que
+    * o nome pode ser alterado caso ele seja inserido errado. */
+
+    /* Abaixo, teremos a plena certeza de que, se algo acontecer, ele não poderá
+    * inputar nada errado. */
+    changeName(name: string){
+        this._name = name;
+        this.validate();
     }
 }
