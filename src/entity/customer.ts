@@ -28,12 +28,14 @@
 * atenda, de forma expressiva, uma regra que a aplicação precisa, é considerada
 * como uma regra de negócio. */
 
-class Customer {
+import Address from "./address";
 
-    private _id: string;
-    private _name: string;
-    private _address = "";
-    private _active: boolean = true;
+export default class Customer {
+
+    _id: string;
+    _name: string;
+    _address!: Address;
+    _active: boolean = true;
 
     /* No momento da CONSTRUÇÃO do objeto, ele já deve estar se autovalidando. Isso
     * garantirá que, todas as vezes que vamos tentar criar um objeto errado ou não
@@ -44,7 +46,7 @@ class Customer {
 
     /* Não devemos usar "setters" porque eles podem não validar as regras de negócio
     * corretamente, assim como o "validate" poderá validar. */
-    constructor(id: string, name: string, address: string) {
+    constructor(id: string, name: string) {
         this._id = id;
         this._name = name;
         this.validate();
@@ -75,7 +77,7 @@ class Customer {
 
         /* Abaixo, estamos apenas ativando o usuário se ele tiver um endereço. Essa poderia ser
         * uma regra de negócios da aplicação. */
-        if(this._address.length === 0){
+        if(this._address === undefined){
             throw new Error("Address is required to activate the customer.");
         }
         this._active = true;
@@ -93,15 +95,14 @@ class Customer {
         return this._name;
     }
 
-    get address(): string {
-        return this._address;
-    }
-
     set id(value: string) {
         this._id = value;
     }
 
-    set address(value: string) {
+
+    /* Nesse caso, podemos ter um "setAddress" na entidade, e o tipo dele
+    * deve ser `Address`. */
+    set address(value: Address) {
         this._address = value;
     }
 
