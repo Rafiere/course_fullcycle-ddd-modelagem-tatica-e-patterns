@@ -32,10 +32,10 @@ import Address from "./address";
 
 export default class Customer {
 
-    _id: string;
-    _name: string;
-    _address!: Address;
-    _active: boolean = true;
+    private _id: string;
+    private _name: string;
+    private _address!: Address;
+    private _active: boolean = true;
 
     /* No momento da CONSTRUÇÃO do objeto, ele já deve estar se autovalidando. Isso
     * garantirá que, todas as vezes que vamos tentar criar um objeto errado ou não
@@ -56,11 +56,11 @@ export default class Customer {
     * criada. Nesse exemplo, se o "id" e o "name" são obrigatórios, a entidade precisará
     * fazer essa validação. */
     validate(){
-        if(this._name.length === 0){
-            throw new Error("Name is required");
-        }
         if(this._id.length === 0){
             throw new Error("ID is required");
+        }
+        if(this._name.length === 0){
+            throw new Error("Name is required");
         }
     }
 
@@ -84,7 +84,7 @@ export default class Customer {
     }
 
     deactivate(){
-        this._active = true;
+        this._active = false;
     }
 
     get id(): string {
@@ -93,6 +93,10 @@ export default class Customer {
 
     get name(): string {
         return this._name;
+    }
+
+    public isActive(): boolean {
+        return this._active;
     }
 
     set id(value: string) {
