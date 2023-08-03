@@ -36,6 +36,7 @@ export default class Customer {
     private _name: string;
     private _address!: Address;
     private _active: boolean = true;
+    private _rewardPoints: number = 0;
 
     /* No momento da CONSTRUÇÃO do objeto, ele já deve estar se autovalidando. Isso
     * garantirá que, todas as vezes que vamos tentar criar um objeto errado ou não
@@ -62,6 +63,10 @@ export default class Customer {
         if(this._name.length === 0){
             throw new Error("Name is required");
         }
+    }
+
+    addRewardPoints(pointsNumber: number){
+        this._rewardPoints += pointsNumber;
     }
 
     /* Abaixo, os métodos "activate()" e "deactivate()" podem
@@ -103,6 +108,9 @@ export default class Customer {
         this._id = value;
     }
 
+    get rewardPoints(): number {
+        return this._rewardPoints;
+    }
 
     /* Nesse caso, podemos ter um "setAddress" na entidade, e o tipo dele
     * deve ser `Address`. */
