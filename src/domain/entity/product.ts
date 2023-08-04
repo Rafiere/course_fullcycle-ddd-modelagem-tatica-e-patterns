@@ -32,6 +32,10 @@ export default class Product {
         this.price = price;
     }
 
+    get _id(): string {
+        return this.id;
+    }
+
     get _name(): string {
         return this.name;
     }
