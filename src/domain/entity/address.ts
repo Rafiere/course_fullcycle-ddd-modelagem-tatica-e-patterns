@@ -6,10 +6,10 @@
 /* Esse objeto não é único, pois ele não é uma entidade. */
 export default class Address {
 
-    private _street: string;
-    private _number: number;
-    private _zipCode: string;
-    private _city: string;
+    private readonly _street: string;
+    private readonly _number: number;
+    private readonly _zipCode: string;
+    private readonly _city: string;
 
     constructor(street: string, number: number, city: string, zipCode: string) {
         this._street = street;
@@ -33,6 +33,22 @@ export default class Address {
         if(this._zipCode.length === 0){
             throw new Error("Zip code is required");
         }
+    }
+
+    get street(): string {
+        return this._street;
+    }
+
+    get number(): number {
+        return this._number;
+    }
+
+    get zipCode(): string {
+        return this._zipCode;
+    }
+
+    get city(): string {
+        return this._city;
     }
 
     /* Podemos modificar a forma de exibição desse objeto. */
