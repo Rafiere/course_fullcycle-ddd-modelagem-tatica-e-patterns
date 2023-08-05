@@ -28,7 +28,7 @@ describe("Customer unit tests", () => {
         customer.changeName("Jane");
 
         //Assert
-        expect(customer.name).toBe("Jane");
+        expect(customer._name).toBe("Jane");
     })
 
     it("should activate customer", () => {
@@ -36,13 +36,13 @@ describe("Customer unit tests", () => {
         //Arrange
         const customer = new Customer("1", "Customer 1");
         const address = new Address("Street 1", 100, "City 1", "12345678");
-        customer.address = address;
+        customer.changeAddress(address);
 
         //Act
         customer.activate();
 
         //Assert
-        expect(customer.isActive()).toBe(true);
+        expect(customer._active).toBe(true);
     })
 
     it("should deactivate customer", () => {
@@ -54,7 +54,7 @@ describe("Customer unit tests", () => {
         customer.deactivate();
 
         //Assert
-        expect(customer.isActive()).toBe(false);
+        expect(customer._active).toBe(false);
     })
 
     it("should throw error when address is undefined when you activate a customer", () => {

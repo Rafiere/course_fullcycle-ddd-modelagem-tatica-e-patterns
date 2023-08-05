@@ -32,11 +32,11 @@ import Address from "./address";
 
 export default class Customer {
 
-    private _id: string;
-    private _name: string;
-    private _address!: Address;
-    private _active: boolean = true;
-    private _rewardPoints: number = 0;
+    private id: string;
+    private name: string;
+    private address!: Address;
+    private active: boolean = true;
+    private rewardPoints: number = 0;
 
     /* No momento da CONSTRUÇÃO do objeto, ele já deve estar se autovalidando. Isso
     * garantirá que, todas as vezes que vamos tentar criar um objeto errado ou não
@@ -48,8 +48,8 @@ export default class Customer {
     /* Não devemos usar "setters" porque eles podem não validar as regras de negócio
     * corretamente, assim como o "validate" poderá validar. */
     constructor(id: string, name: string) {
-        this._id = id;
-        this._name = name;
+        this.id = id;
+        this.name = name;
         this.validate();
     }
 
@@ -66,7 +66,7 @@ export default class Customer {
     }
 
     addRewardPoints(pointsNumber: number){
-        this._rewardPoints += pointsNumber;
+        this.rewardPoints += pointsNumber;
     }
 
     /* Abaixo, os métodos "activate()" e "deactivate()" podem
@@ -82,40 +82,38 @@ export default class Customer {
 
         /* Abaixo, estamos apenas ativando o usuário se ele tiver um endereço. Essa poderia ser
         * uma regra de negócios da aplicação. */
-        if(this._address === undefined){
+        if(this.address === undefined){
             throw new Error("Address is required to activate the customer.");
         }
-        this._active = true;
+        this.active = true;
     }
 
     deactivate(){
-        this._active = false;
+        this.active = false;
     }
 
-    get id(): string {
-        return this._id;
+    get _id(): string {
+        return this.id;
     }
 
-    get name(): string {
-        return this._name;
+    get _name(): string {
+        return this.name;
     }
 
-    public isActive(): boolean {
-        return this._active;
+    get _active(): boolean {
+        return this.active;
     }
 
-    set id(value: string) {
-        this._id = value;
+    set _id(value: string) {
+        this.id = value;
     }
 
-    get rewardPoints(): number {
-        return this._rewardPoints;
+    get _rewardPoints(): number {
+        return this.rewardPoints;
     }
 
-    /* Nesse caso, podemos ter um "setAddress" na entidade, e o tipo dele
-    * deve ser `Address`. */
-    set address(value: Address) {
-        this._address = value;
+    get _address(): Address {
+        return this.address;
     }
 
     /* Quando começamos pensar em "motivos para mudança", começamos a
@@ -129,7 +127,12 @@ export default class Customer {
     /* Abaixo, teremos a plena certeza de que, se algo acontecer, ele não poderá
     * inputar nada errado. */
     changeName(name: string){
-        this._name = name;
+        this.name = name;
         this.validate();
+    }
+
+    changeAddress(address: Address){
+        this.address = address;
+        return this;
     }
 }

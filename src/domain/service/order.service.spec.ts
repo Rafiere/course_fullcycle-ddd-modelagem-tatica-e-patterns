@@ -27,18 +27,18 @@ describe("Order service unit tests", () => {
         const order = OrderService.placeOrder(customer, [item1]);
 
         /* A quantidade de pontos vai ser a metade do valor que foi gasto na "Order". */
-        expect(customer.rewardPoints).toBe(10);
+        expect(customer._rewardPoints).toBe(10);
         expect(order.total).toBe(20);
     })
 
     it("should add reward points", () => {
         const customer = new Customer("1", "Customer 01");
-        expect(customer.rewardPoints).toBe(0)
+        expect(customer._rewardPoints).toBe(0)
 
         customer.addRewardPoints(10);
-        expect(customer.rewardPoints).toBe(10)
+        expect(customer._rewardPoints).toBe(10)
 
         customer.addRewardPoints(20);
-        expect(customer.rewardPoints).toBe(30)
+        expect(customer._rewardPoints).toBe(30)
     })
 })
