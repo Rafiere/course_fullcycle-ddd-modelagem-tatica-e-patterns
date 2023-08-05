@@ -99,4 +99,22 @@ describe("Customer repository unit tests", () => {
 
         expect(customerModel).toStrictEqual(customer);
     })
+
+    it("should find all customers", async () => {
+      const customerRepository = new CustomerRepository();
+
+        const customer1 = new Customer("1", "Customer 1");
+        const address1 = new Address("Street 1", 10, "City 1", "10000-000")
+        customer1.changeAddress(address1);
+        customerRepository.create(customer1);
+
+        const customer2 = new Customer("2", "Customer 2");
+        const address2 = new Address("Street 2", 20, "City 2", "20000-000")
+        customer2.changeAddress(address2);
+        customerRepository.create(customer2);
+
+        const customerModel = await customerRepository.findAll();
+
+        expect(customerModel).toStrictEqual([customer1, customer2]);
+    })
 })

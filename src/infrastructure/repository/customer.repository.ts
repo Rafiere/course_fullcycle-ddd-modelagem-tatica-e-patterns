@@ -33,7 +33,11 @@ export default class CustomerRepository implements CustomerRepositoryInterface {
         const customerModels = await CustomerModel.findAll();
 
         return customerModels.map(customerModel => {
-            return new Customer(customerModel.id, customerModel.name);
+            const address = new Address(customerModel.street, customerModel.number, customerModel.city, customerModel.zipCode)
+
+            const createdCustomer = new Customer(customerModel.id, customerModel.name);
+
+            return createdCustomer.changeAddress(address);
         })
     }
 
