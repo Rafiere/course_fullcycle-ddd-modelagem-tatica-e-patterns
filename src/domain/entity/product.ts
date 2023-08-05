@@ -1,6 +1,6 @@
 export default class Product {
 
-    private id: string;
+    private readonly id: string;
     private name: string;
     private price: number;
 
