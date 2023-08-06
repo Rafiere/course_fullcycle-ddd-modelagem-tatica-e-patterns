@@ -27,7 +27,7 @@ describe("Order unit tests", () => {
 
             const order = new Order("123", "1", [item, item2]);
 
-            expect(order.total).toBe(1200);
+            expect(order._total).toBe(1200);
     })
 
     it("should check if the item quantity is greater than zero", () => {

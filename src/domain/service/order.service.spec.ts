@@ -28,7 +28,7 @@ describe("Order service unit tests", () => {
 
         /* A quantidade de pontos vai ser a metade do valor que foi gasto na "Order". */
         expect(customer._rewardPoints).toBe(10);
-        expect(order.total).toBe(20);
+        expect(order._total).toBe(20);
     })
 
     it("should add reward points", () => {
