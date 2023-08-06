@@ -36,11 +36,23 @@ export class OrderItem {
         }
     }
 
+    get _id(){
+        return this.id
+    }
+
+    get _name(){
+        return this.name
+    }
+
     get _price(){
         return this.price
     }
 
     get _quantity(){
         return this.quantity
+    }
+
+    get _productId(){
+        return this.productId
     }
 }
