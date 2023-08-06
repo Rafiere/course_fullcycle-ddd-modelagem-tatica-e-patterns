@@ -2,6 +2,7 @@ import OrderRepositoryInterface from "../../domain/repository/order-repository.i
 import Order from "../../domain/entity/order";
 import OrderModel from "../db/sequelize/model/order.model";
 import OrderItemModel from "../db/sequelize/model/order-item.model";
+import {OrderItem} from "../../domain/entity/order-item";
 
 export default class OrderRepository implements OrderRepositoryInterface {
     async create(entity: Order): Promise<void> {
@@ -12,12 +13,12 @@ export default class OrderRepository implements OrderRepositoryInterface {
         * "OrderItem" que estão sendo criados. */
 
         await OrderModel.create({
-                id: entity._id,
-                customer_id: entity._customerId,
+                id: entity.id,
+                customer_id: entity.customerId,
                 total: entity.calculateTotalValue(),
-                items: entity._items.map(item => ({
+                items: entity.items.map(item => ({
                     id: item._id,
-                    product_id: item._productId,
+                    productId: item._productId,
                     name: item._name,
                     price: item._price,
                     quantity: item._quantity,
@@ -29,14 +30,31 @@ export default class OrderRepository implements OrderRepositoryInterface {
     }
 
     async find(id: string): Promise<Order> {
-        return Promise.resolve(undefined);
+
+        const orderModel = await OrderModel.findOne({where: {id: id}, include: ["items"]})
+
+        return new Order(orderModel.id, orderModel.customer_id, orderModel.items.map(item => {
+            return new OrderItem(item.id, item.productId, item.name, item.price, item.quantity);
+        }))
     }
 
     async findAll(): Promise<Order[]> {
-        return Promise.resolve([]);
+        const orderModels = await OrderModel.findAll({include: ["items"]});
+
+        return orderModels.map(orderModel => {
+            return new Order(orderModel.id, orderModel.customer_id, orderModel.items.map(item => {
+                return new OrderItem(item.id, item.productId, item.name, item.price, item.quantity);
+            }))
+        })
     }
 
     async update(entity: Order): Promise<void> {
-        return Promise.resolve(undefined);
+        const orderModel = await OrderModel.findOne({where: {id: entity.id}});
+
+        await orderModel.update({
+            customer_id: entity.customerId,
+            items: entity.items,
+            total: entity.calculateTotalValue(),
+        })
     }
 }
