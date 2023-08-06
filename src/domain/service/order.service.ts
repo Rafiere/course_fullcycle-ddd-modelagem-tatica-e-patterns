@@ -7,7 +7,7 @@ import {v4 as uuid} from "uuid"
 export default class OrderService {
 
     static total(orders: Order[]): number {
-        return orders.reduce((total, order) => total + order.total, 0)
+        return orders.reduce((total, order) => total + order._total, 0)
     }
 
     /* Estamos utilizando os agregados "Customer" e "Order" para executar essa
@@ -20,7 +20,7 @@ export default class OrderService {
 
         const order = new Order(uuid(), customer._id, orderItems);
 
-        customer.addRewardPoints(order.total / 2);
+        customer.addRewardPoints(order._total / 2);
         return order;
     }
 }
