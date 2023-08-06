@@ -10,7 +10,18 @@ export default class EventDispatcher implements EventDispatcherInterface {
     private eventHandlers: {[eventName: string]: EventHandlerInterface[] } = {}
 
     notify(event: EventInterface): void {
+        /* Estamos verificando se o evento existe. Para cada evento no
+        * "forEach()", estamos executando a função "handle". */
 
+        const eventName = event.constructor.name;
+
+        if(!this.eventHandlers[eventName]) {
+            return;
+        }
+
+        /* Para cada handler desse evento, estamos executando o método
+        * "handle()" de todos os handlers desse evento. */
+        this.eventHandlers[eventName].forEach((handler) => handler.handle(event));
     }
 
     /* Primeiramente, vemos se o evento já existe. */
