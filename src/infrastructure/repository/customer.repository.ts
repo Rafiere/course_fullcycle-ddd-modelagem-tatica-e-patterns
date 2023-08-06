@@ -19,16 +19,35 @@ export default class CustomerRepository implements CustomerRepositoryInterface {
     }
 
     async find(id: string): Promise<Customer> {
-        const customerModel = await CustomerModel.findOne({where: {id: id}});
+
+        /* Estamos tratando o caso de borda em que um cliente não é encontrado. */
+
+        let customerModel;
+
+        try {
+            /* Estamos rejeitando a promise caso o cliente não seja encontrado. */
+            customerModel = await CustomerModel.findOne({where: {id: id}, rejectOnEmpty: true});
+        } catch (error) {
+            throw new Error("Customer not found")
+        }
+
+        /* Estamos criando o objeto igualmente ao objeto que foi salvo pela primeira vez, assim, estamos mantendo o
+        * estado da entidade. */
 
         const address = new Address(customerModel.street, customerModel.number, customerModel.city, customerModel.zipCode);
         const customer = new Customer(customerModel.id, customerModel.name);
+        customer.addRewardPoints(customerModel.rewardPoints);
+        if(!customerModel.active){
+            customer.activate();
+        }
 
         customer.changeAddress(address);
 
         return customer;
     }
 
+    /* O maior cuidado do repositório não é fazer a busca, mas remontar o objeto da forma mais
+    * cuidadosa possível para trabalharmos. */
     async findAll(): Promise<Customer[]> {
         const customerModels = await CustomerModel.findAll();
 
@@ -37,7 +56,15 @@ export default class CustomerRepository implements CustomerRepositoryInterface {
 
             const createdCustomer = new Customer(customerModel.id, customerModel.name);
 
-            return createdCustomer.changeAddress(address);
+            createdCustomer.changeAddress(address);
+
+            createdCustomer.addRewardPoints(customerModel.rewardPoints);
+
+            if(customerModel.active){
+                createdCustomer.activate();
+            }
+
+            return createdCustomer;
         })
     }
 
