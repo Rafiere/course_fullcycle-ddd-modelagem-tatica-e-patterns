@@ -26,9 +26,23 @@ export default class EventDispatcher implements EventDispatcherInterface {
     }
 
     unregister(eventName: string, eventHandler: EventHandlerInterface): void {
+
+        if(!this.eventHandlers[eventName]) {
+            return;
+        }
+
+        /* Se o evento existir, removeremos o handler desse evento. */
+        const index = this.eventHandlers[eventName].findIndex((handler) => handler === eventHandler);
+
+        if(index !== -1) {
+            this.eventHandlers[eventName].splice(index, 1);
+        }
     }
 
     unregisterAll(): void {
+
+        /* Removendo o registro de todos os handlers. */
+        this.eventHandlers = {};
     }
 
     getEventHandlers(): {[eventName: string]: EventHandlerInterface[]} {
