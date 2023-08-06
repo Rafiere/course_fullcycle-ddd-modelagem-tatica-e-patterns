@@ -15,7 +15,7 @@ export default class OrderItemModel extends Model {
     /* Essa coluna representa a chave estrangeira que aponta para o "product_id". */
     @ForeignKey(() => ProductModel)
     @Column({allowNull: false})
-    declare product_id: string;
+    declare productId: string;
 
     /* Essa coluna representa a classe inteira, que aponta para o "ProductModel". */
     @BelongsTo(() => ProductModel)
@@ -23,7 +23,7 @@ export default class OrderItemModel extends Model {
 
     @ForeignKey(() => OrderModel)
     @Column({allowNull: false})
-    declare order_id: string;
+    declare orderId: string;
 
     /* Estamos definindo que um item pertence a apenas uma ordem. */
     @BelongsTo(() => OrderModel)
