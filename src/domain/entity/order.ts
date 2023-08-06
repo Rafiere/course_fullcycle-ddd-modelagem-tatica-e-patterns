@@ -12,10 +12,10 @@ export default class Order {
     * "OrderItem" dentro dele. */
     _items: OrderItem[] = [];
 
-    private _total: number;
+    private total: number;
 
-    get total(): number {
-        return this._total;
+    get _total(): number {
+        return this.total;
     }
 
 
@@ -23,7 +23,7 @@ export default class Order {
         this._id = id;
         this._customerId = customerId;
         this._items = items;
-        this._total = this.calculateTotalValue();
+        this.total = this.calculateTotalValue();
         this.validate();
     }
 
