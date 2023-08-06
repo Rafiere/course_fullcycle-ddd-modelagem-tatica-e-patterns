@@ -59,7 +59,7 @@ describe("Order repository tests", () => {
         const orderRepository = new OrderRepository();
         await orderRepository.create(order);
 
-        const orderModel = await OrderModel.findOne({where: {id: order._id}, include: ["items"]});
+        const orderModel = await OrderModel.findOne({where: {id: order.id}, include: ["items"]});
 
         expect(orderModel.toJSON()).toStrictEqual({
             id: "123",
@@ -71,8 +71,49 @@ describe("Order repository tests", () => {
                     name: orderItem._name,
                     price: orderItem._price,
                     quantity: orderItem._quantity,
-                    order_id: "123",
-                    product_id: "123"
+                    orderId: "123",
+                    productId: "123"
+                }
+            ]
+        })
+    })
+
+    it("should find an order", async () => {
+
+        const customerRepository = new CustomerRepository();
+        const customer = new Customer("123", "Customer 1");
+        customerRepository.create(customer);
+
+        const product = new Product("123", "Product 1", 10);
+        const productRepository = new ProductRepository();
+        await productRepository.create(product);
+
+        const orderItem = new OrderItem(
+            "1",
+            product._id,
+            product._name,
+            product._price,
+            2
+        );
+
+        const order = new Order("123", "123", [orderItem]);
+        const orderRepository = new OrderRepository();
+        await orderRepository.create(order);
+
+        const orderModel = await OrderModel.findOne({where: {id: order.id}, include: ["items"]});
+
+        expect(orderModel.toJSON()).toStrictEqual({
+            id: "123",
+            customer_id: "123",
+            total: order.calculateTotalValue(),
+            items: [
+                {
+                    id: orderItem._id,
+                    name: orderItem._name,
+                    price: orderItem._price,
+                    quantity: orderItem._quantity,
+                    orderId: "123",
+                    productId: "123"
                 }
             ]
         })
