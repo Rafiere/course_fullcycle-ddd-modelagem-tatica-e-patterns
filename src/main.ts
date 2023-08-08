@@ -1,7 +1,7 @@
-import Customer from "./domain/entity/customer";
-import Address from "./domain/entity/address";
-import {OrderItem} from "./domain/entity/order-item";
-import Order from "./domain/entity/order";
+import Customer from "./domain/customer/entity/customer";
+import Address from "./domain/customer/entity/value-object/address";
+import {OrderItem} from "./domain/checkout/entity/order-item";
+import Order from "./domain/checkout/entity/order";
 
 /* O "Customer" e o "Address" fazem parte de um agregado. */
 let customer = new Customer("1", "John");
